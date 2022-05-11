@@ -12,34 +12,14 @@
 </head>
 
 <body>
-
-<!-- 
-    <form action="" class="form-control">
-
-
-        <label for="name">ReadApitch</label>
-        <input type="text" name="yourname">
-        <<br>
-        <label for="name">Enter your pitch</label>
-        <input type="text" name="pitchsection" id="">
-
-        <input type="submit" value="submit Data"> -->
-
-
-
-
-    <!-- </form> --> 
+ 
     <form action="http://127.0.0.1:5000/" method="POST" class="form-control">
 
         {{form.hidden_tag()}}
 
         <p> {{form.comment.label()}}{{form.comment}}</p>
         <br>
-        <!-- <p>{{form.Addpitch.label()}}{{form.Addpitch}}</p> -->
-        <br>
-        <!-- {{form.submit}} -->
-        <!-- <a href="/login" class="btn btn-primary">{{form.submit}}</a> -->
-
+  
     </form>
 
 

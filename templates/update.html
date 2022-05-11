@@ -26,7 +26,7 @@
             <div class="card-body">
 
                 <h4 style="text-align: center;color:aliceblue; background-color: black;font-family: 'Times New Roman', Times, serif;">Add your minute pitch here</h4>
-                <form action="http://127.0.0.1:5000/" method="POST" class="form-control">
+                <form action="" method="POST" class="form-control">
 
                     {{form.hidden_tag()}}
 
@@ -34,14 +34,11 @@
                     <br>
                     <p>{{form.Addpitch.label()}}{{form.Addpitch}}</p>
                     <br>
-                    <!-- {{form.submit}} -->
-                    <a href="/display" class="btn btn-primary">{{form.submit}}</a>
+                    <a href="/display" style="width:2cm;">{{form.submit}}</a>
 
                 </form>
 
 
-                <!-- <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a> -->
             </div>
         </div>
 

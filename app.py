@@ -42,7 +42,7 @@ class comments(db.Model):
     title = db.Column(db.String(25),nullable =False) 
     Addpitch = db.Column(db.String(50),nullable =False)
  
-#     replies_id = db.Column(db.Integer,db.Foreignkey('replies.id'))
+
 
 
 
@@ -58,7 +58,7 @@ class RegisterFrm(FlaskForm):
 
 
 
-@app.route('/register',methods=['POST','GET'])
+@app.route('/',methods=['POST','GET'])
 def register():
     frm=RegisterFrm()
     if frm.validate_on_submit():
@@ -67,26 +67,10 @@ def register():
             newuser=User(username=frm.name.data,email=frm.email.data,password=hash_pwd)
             db.session.add(newuser)
             db.session.commit()
-            # msg=Message(subject=" POSTER APP REGISTRATION",recipients=[frm.email.data],body=frm.name.data+" Thank you for registering")
-            # email.send(msg)
+         
             return redirect(url_for('login'))
-        # else:
-            # flash(" Passwords do not match")
-
-      
-
+        
     return render_template('register.html',form=frm)
-
-
-
-
-
-
-# class Replies(db.Model):
-#     id = db.Column(db.Integer,primary_key = True)
-#     replies =db.Column(db.Integer,nullable = False)
-#     type = db.Column(db.Interger,nullable = False)
-#     comments = db.relationship('comments,',backref = 'replies') 
 
 
 class User(db.Model) :
@@ -149,26 +133,7 @@ def display():
 
 
 
-
-
-
-
-
-
-
-
-@app.route('/welcome')
-def welcome() :
-
-
-    return render_template('welcome.html')
-
-
-
-
-
-
-@app.route('/', methods = ['POST','GET'])
+@app.route('/update', methods = ['POST','GET'])
 def index():
 
     dataForm =UserForm()
@@ -179,15 +144,7 @@ def index():
         db.session.add(addpit)
         db.session.commit()
 
-
-
-
         return redirect(url_for('display'))
-
-
-  
-
-
     return render_template('update.html',form = dataForm,)    
 
 
