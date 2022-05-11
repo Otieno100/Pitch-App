@@ -3,7 +3,7 @@ import email
 # from turtle import title
 # from turtle import title
 import bcrypt
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request,flash, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField, PasswordField
@@ -14,13 +14,17 @@ from wtforms import StringField,SubmitField,PasswordField,FileField,TextAreaFiel
 from wtforms.validators import DataRequired
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin,login_manager, login_required,login_user,logout_user,LoginManager,current_user
-from flask_mail import Message, Mail
+from flask_mail import Message , Mail
 import os
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///db.db'
 app.config['SECRET_KEY']='my secrecte key'
+
+SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', default=f"sqlite:///{os.path.join( 'instance', 'app.db')}")
+                                                     
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 bcrypt = Bcrypt(app)
 
 
@@ -54,7 +58,7 @@ class RegisterFrm(FlaskForm):
 
 
 
-@app.route('/register',methods=['POST','GET'])
+@app.route('/',methods=['POST','GET'])
 def register():
     frm=RegisterFrm()
     if frm.validate_on_submit():
@@ -63,11 +67,8 @@ def register():
             newuser=User(username=frm.name.data,email=frm.email.data,password=hash_pwd)
             db.session.add(newuser)
             db.session.commit()
-            msg=Message(subject=" POSTER APP REGISTRATION",recipients=[frm.email.data],body=frm.name.data+" Thank you for registering")
-            mail.send(msg)
-        #     return redirect(url_for('login'))
-        # else:
-        #     flash(" Passwords do not match")
+            return redirect(url_for('login'))
+    
 
       
 
@@ -120,7 +121,8 @@ def login():
         session['name'] = updateUser.name.data
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('display'))
+
+        return redirect(url_for('update'))
 
     return render_template('login.html', form = updateUser)
 
@@ -146,7 +148,33 @@ def display():
     return render_template('display.html', data = qr_all)
 
 
-@app.route('/', methods = ['POST','GET'])
+
+
+
+
+
+
+
+
+
+
+@app.route('/welcome')
+def welcome() :
+
+
+    # wlcm = welcome()
+ 
+
+    # return redirect(url_for('login'))
+
+    return render_template('welcome.html')
+
+
+
+
+
+
+@app.route('/update', methods = ['POST','GET'])
 def index():
 
     dataForm =UserForm()
@@ -161,7 +189,7 @@ def index():
 
 
 
-        return redirect(url_for('login'))
+        return redirect(url_for('display'))
 
 
          #user section
