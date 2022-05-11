@@ -21,11 +21,11 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///db.db'
 app.config['SECRET_KEY']='my secrecte key'
-
-SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', default=f"sqlite:///{os.path.join( 'instance', 'app.db')}")
-                                                     
-SQLALCHEMY_TRACK_MODIFICATIONS = False
 bcrypt = Bcrypt(app)
+
+
+
+
 
 
 db = SQLAlchemy(app)
@@ -58,7 +58,7 @@ class RegisterFrm(FlaskForm):
 
 
 
-@app.route('/',methods=['POST','GET'])
+@app.route('/register',methods=['POST','GET'])
 def register():
     frm=RegisterFrm()
     if frm.validate_on_submit():
@@ -67,8 +67,11 @@ def register():
             newuser=User(username=frm.name.data,email=frm.email.data,password=hash_pwd)
             db.session.add(newuser)
             db.session.commit()
+            # msg=Message(subject=" POSTER APP REGISTRATION",recipients=[frm.email.data],body=frm.name.data+" Thank you for registering")
+            # email.send(msg)
             return redirect(url_for('login'))
-    
+        # else:
+            # flash(" Passwords do not match")
 
       
 
@@ -121,8 +124,7 @@ def login():
         session['name'] = updateUser.name.data
         db.session.add(user)
         db.session.commit()
-
-        return redirect(url_for('update'))
+        return redirect(url_for('display'))
 
     return render_template('login.html', form = updateUser)
 
@@ -140,11 +142,8 @@ def user():
 
 @app.route('/display')
 def display():
-    # querry selector
     qr_all =comments.query.all()
-#  return redirect(url_for('login'))
 
-     
     return render_template('display.html', data = qr_all)
 
 
@@ -162,11 +161,6 @@ def display():
 def welcome() :
 
 
-    # wlcm = welcome()
- 
-
-    # return redirect(url_for('login'))
-
     return render_template('welcome.html')
 
 
@@ -174,7 +168,7 @@ def welcome() :
 
 
 
-@app.route('/update', methods = ['POST','GET'])
+@app.route('/', methods = ['POST','GET'])
 def index():
 
     dataForm =UserForm()
@@ -183,7 +177,6 @@ def index():
     if dataForm.validate_on_submit():
         addpit = comments(Addpitch = dataForm.Addpitch.data, title = dataForm.title.data)
         db.session.add(addpit)
-        # db.session.add(title)
         db.session.commit()
 
 
@@ -192,18 +185,7 @@ def index():
         return redirect(url_for('display'))
 
 
-         #user section
-    # if request.method == 'POST':
-
-    #     # adding data to my tables
-    #     form = request.form
-    #     addpit =comments(yourname =form['name'],pitch = form['pitchsection'])
-    #     db.session.add(addpit)
-    #     db.session.commit()
-
-    # return render_template('user.html')
-        # return redirect(url_for('user'))
-
+  
 
 
     return render_template('update.html',form = dataForm,)    
