@@ -10,6 +10,12 @@ from wtforms import StringField,SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from wtforms import StringField,SubmitField,PasswordField,FileField,TextAreaField,EmailField
+from wtforms.validators import DataRequired
+from flask_bcrypt import Bcrypt
+from flask_login import UserMixin,login_manager, login_required,login_user,logout_user,LoginManager,current_user
+from flask_mail import Message, Mail
+import os
 
 app = Flask(__name__)
 
@@ -33,6 +39,42 @@ class comments(db.Model):
     Addpitch = db.Column(db.String(50),nullable =False)
  
 #     replies_id = db.Column(db.Integer,db.Foreignkey('replies.id'))
+
+
+
+
+class RegisterFrm(FlaskForm):
+    name=StringField("username",validators=[DataRequired()])
+    email=EmailField("Email",validators=[DataRequired()])
+    password=PasswordField("Password",validators=[DataRequired()])
+    cnfpass=PasswordField("Confirm Password",validators=[DataRequired()])
+    submt=SubmitField('Register')
+
+
+
+
+
+@app.route('/register',methods=['POST','GET'])
+def register():
+    frm=RegisterFrm()
+    if frm.validate_on_submit():
+        if frm.password.data==frm.cnfpass.data:
+            hash_pwd=bcrypt.generate_password_hash(frm.password.data)
+            newuser=User(username=frm.name.data,email=frm.email.data,password=hash_pwd)
+            db.session.add(newuser)
+            db.session.commit()
+            msg=Message(subject=" POSTER APP REGISTRATION",recipients=[frm.email.data],body=frm.name.data+" Thank you for registering")
+            mail.send(msg)
+            return redirect(url_for('login'))
+        else:
+            flash(" Passwords do not match")
+
+      
+
+    return render_template('register.html',form=frm)
+
+
+
 
 
 
@@ -67,7 +109,7 @@ class UserForm (FlaskForm) :
     submit = SubmitField('submit')
 
 
-@app.route('/login', methods = ['POST','GET'])
+@app.route('/', methods = ['POST','GET'])
 def login():
     updateUser =UpdateForm()
   
@@ -101,7 +143,7 @@ def display():
     return render_template('display.html', data = qr_all)
 
 
-@app.route('/', methods = ['POST','GET'])
+@app.route('/update', methods = ['POST','GET'])
 def index():
 
     dataForm =UserForm()
@@ -129,11 +171,11 @@ def index():
     #     db.session.commit()
 
     # return render_template('user.html')
-        return redirect(url_for('user'))
+        # return redirect(url_for('user'))
 
 
 
-    return render_template('index.html',form = dataForm, )    
+    return render_template('update.html',form = dataForm,)    
 
 
 
