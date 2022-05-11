@@ -109,7 +109,7 @@ class UserForm (FlaskForm) :
     submit = SubmitField('submit')
 
 
-@app.route('/', methods = ['POST','GET'])
+@app.route('/login', methods = ['POST','GET'])
 def login():
     updateUser =UpdateForm()
   
@@ -120,7 +120,7 @@ def login():
         session['name'] = updateUser.name.data
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('user'))
+        return redirect(url_for('display'))
 
     return render_template('login.html', form = updateUser)
 
@@ -140,10 +140,13 @@ def user():
 def display():
     # querry selector
     qr_all =comments.query.all()
+#  return redirect(url_for('login'))
+
+     
     return render_template('display.html', data = qr_all)
 
 
-@app.route('/update', methods = ['POST','GET'])
+@app.route('/', methods = ['POST','GET'])
 def index():
 
     dataForm =UserForm()
@@ -158,7 +161,7 @@ def index():
 
 
 
-        return redirect(url_for('display'))
+        return redirect(url_for('login'))
 
 
          #user section
