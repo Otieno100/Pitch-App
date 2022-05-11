@@ -119,7 +119,11 @@
 
                 <p>{{form.password.label()}} <br> {{form.password}}</p>
 
-                {{form.submit}}
+                <!-- {{form.submit}} -->
+
+                <!-- <a href="/update" class="btn btn-primary">  {{form.submit}}</a> -->
+
+                <!-- <a href='/update'><button class="btn btn-primary btn-lg">   {{form.submit}} </button></a> -->
             </form>
 
 
@@ -127,7 +131,9 @@
 
             <h5 class="card-title"></h5>
             <p class="card-text">You are about to login into my_pitch_app.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="/update" class="btn btn-primary">  {{form.submit}}</a>
+            <!-- <a href='/'><button class="btn btn-primary btn-lg">Addpitch</button></a> -->
+            
         </div>
         <div class="card-footer text-muted">
 
