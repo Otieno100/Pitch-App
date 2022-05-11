@@ -65,9 +65,9 @@ def register():
             db.session.commit()
             msg=Message(subject=" POSTER APP REGISTRATION",recipients=[frm.email.data],body=frm.name.data+" Thank you for registering")
             mail.send(msg)
-            return redirect(url_for('login'))
-        else:
-            flash(" Passwords do not match")
+        #     return redirect(url_for('login'))
+        # else:
+        #     flash(" Passwords do not match")
 
       
 

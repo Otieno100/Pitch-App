@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+<!-- 
+    <p>{{form.hidden_tag()}} {{form.name.label()}} <br> {{form.name}}</p>
+
+    <p>{{form.email.label()}} <br>
+
+        {{form.email}}</p>
+
+    <p>{{form.password.label()}} <br> {{form.password}}</p>
+
+   <p> {{form.submit}}</p> -->
+
+
+   <form action="http://127.0.0.1:5000/" method="POST" class="form-control">
+
+    {{form.hidden_tag()}}
+
+    <p> {{form.name.label()}}{{form.name}}</p>
+    <br>
+    <p>{{form.email.label()}}{{form.email}}</p>
+    <br>
+    <p>{{form.password.label()}}{{form.password}}</p>
+    <br>
+    {{form.submit}}
+    <a href="/display" class="btn btn-primary">  {{form.submt}}</a>
+
+</form>
+
+
+
+
+
+
+</body>
+
+</html>
